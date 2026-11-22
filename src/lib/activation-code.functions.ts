@@ -4,8 +4,10 @@ import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
 import { supabaseAdmin } from '@/integrations/supabase/client.server';
 
 async function assertAdmin(userId: string) {
-  const { data: user } = await supabaseAdmin.auth.admin.getUserById(userId);
-  const role = (user?.user?.app_metadata as Record<string, unknown>)?.['role'];
+  const { data: user, error } = await supabaseAdmin.auth.admin.getUserById(userId);
+  const appMeta = user?.user?.app_metadata as Record<string, unknown> | undefined;
+  const role = appMeta?.['role'];
+  console.log('[assertAdmin] userId:', userId, 'app_metadata:', JSON.stringify(appMeta), 'role:', role, 'error:', error?.message);
   if (role !== 'admin') throw new Error('Conta não autorizada a emitir licenças.');
 }
 
