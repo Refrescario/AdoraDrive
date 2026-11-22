@@ -9,12 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as _rootSpaRouteImport } from './routes/__root.spa'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AtivacaoRouteImport } from './routes/ativacao'
 import { Route as LicencasRouteImport } from './routes/licencas'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as LojaRouteImport } from './routes/loja'
 import { Route as ScannerResetRouteImport } from './routes/scanner-reset'
+import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
 
+const _rootSpaRoute = _rootSpaRouteImport.update({
+  id: '/__root/spa',
+  path: '/spa',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -30,6 +38,11 @@ const LicencasRoute = LicencasRouteImport.update({
   path: '/licencas',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LojaRoute = LojaRouteImport.update({
   id: '/loja',
   path: '/loja',
@@ -40,47 +53,96 @@ const ScannerResetRoute = ScannerResetRouteImport.update({
   path: '/scanner-reset',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ativacao': typeof AtivacaoRoute
   '/licencas': typeof LicencasRoute
+  '/login': typeof LoginRoute
   '/loja': typeof LojaRoute
   '/scanner-reset': typeof ScannerResetRoute
+  '/spa': typeof _rootSpaRoute
+  '/auth/callback': typeof AuthCallbackRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ativacao': typeof AtivacaoRoute
   '/licencas': typeof LicencasRoute
+  '/login': typeof LoginRoute
   '/loja': typeof LojaRoute
   '/scanner-reset': typeof ScannerResetRoute
+  '/spa': typeof _rootSpaRoute
+  '/auth/callback': typeof AuthCallbackRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/ativacao': typeof AtivacaoRoute
   '/licencas': typeof LicencasRoute
+  '/login': typeof LoginRoute
   '/loja': typeof LojaRoute
   '/scanner-reset': typeof ScannerResetRoute
+  '/__root/spa': typeof _rootSpaRoute
+  '/auth/callback': typeof AuthCallbackRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ativacao' | '/licencas' | '/loja' | '/scanner-reset'
+  fullPaths:
+    | '/'
+    | '/ativacao'
+    | '/licencas'
+    | '/login'
+    | '/loja'
+    | '/scanner-reset'
+    | '/spa'
+    | '/auth/callback'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ativacao' | '/licencas' | '/loja' | '/scanner-reset'
-  id: '__root__' | '/' | '/ativacao' | '/licencas' | '/loja' | '/scanner-reset'
+  to:
+    | '/'
+    | '/ativacao'
+    | '/licencas'
+    | '/login'
+    | '/loja'
+    | '/scanner-reset'
+    | '/spa'
+    | '/auth/callback'
+  id:
+    | '__root__'
+    | '/'
+    | '/ativacao'
+    | '/licencas'
+    | '/login'
+    | '/loja'
+    | '/scanner-reset'
+    | '/__root/spa'
+    | '/auth/callback'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AtivacaoRoute: typeof AtivacaoRoute
   LicencasRoute: typeof LicencasRoute
+  LoginRoute: typeof LoginRoute
   LojaRoute: typeof LojaRoute
   ScannerResetRoute: typeof ScannerResetRoute
+  _rootSpaRoute: typeof _rootSpaRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/__root/spa': {
+      id: '/__root/spa'
+      path: '/spa'
+      fullPath: '/spa'
+      preLoaderRoute: typeof _rootSpaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -102,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LicencasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/loja': {
       id: '/loja'
       path: '/loja'
@@ -116,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScannerResetRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -123,8 +199,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AtivacaoRoute: AtivacaoRoute,
   LicencasRoute: LicencasRoute,
+  LoginRoute: LoginRoute,
   LojaRoute: LojaRoute,
   ScannerResetRoute: ScannerResetRoute,
+  _rootSpaRoute: _rootSpaRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
