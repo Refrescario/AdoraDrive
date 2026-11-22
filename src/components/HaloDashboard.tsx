@@ -69,6 +69,20 @@ export function HaloDashboard({ design, speed, rpm, animated, contained = false 
             aria-label={`${d.name} animados`}
             className="absolute inset-0 h-full w-full object-cover halo-bg"
             onError={() => setFailedVideos((failed) => [...failed, design])}
+            ref={(el) => {
+              if (el) {
+                el.muted = true;
+                const p = el.play();
+                if (p !== undefined) {
+                  p.catch(() => {
+                    // autoplay blocked — try again on first user interaction
+                    const resume = () => { el.play().catch(() => {}); document.removeEventListener("click", resume); document.removeEventListener("touchstart", resume); };
+                    document.addEventListener("click", resume, { once: true });
+                    document.addEventListener("touchstart", resume, { once: true });
+                  });
+                }
+              }
+            }}
           />
         )}
         <div className="absolute aspect-square -translate-x-1/2 -translate-y-1/2" style={{ left: `${d.x * 100}%`, top: `${d.y * 100}%`, height: `${d.d * 100}%` }}>

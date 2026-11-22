@@ -37,7 +37,7 @@ export const THEME_CATALOG: ThemeOption[] = [
   ...DESIGNS.map((d) => ({ id: `premium-${d.id}`, name: d.name, img: d.img, sky: DESIGN_SKIES[d.id], design: d.id, background: "jesus", premium: false, animated: true, palette: designPalettes[d.id] })),
   ...backgrounds.map((t) => ({ ...t, id: `premium-classico-${t.id}`, design: "classico" as const, background: t.id, premium: false, animated: true })),
 ];
-export const DEFAULT_FREE_THEME = "free-anjos-nuvens";
+export const DEFAULT_FREE_THEME = "premium-anjos-nuvens";
 export function resolveTheme(id: string): ThemeOption {
   const theme = THEME_CATALOG.find((t) => t.id === id) ?? THEME_CATALOG.find((t) => t.id === DEFAULT_FREE_THEME);
   if (!theme) throw new Error("A coleção precisa de um tema gratuito.");
