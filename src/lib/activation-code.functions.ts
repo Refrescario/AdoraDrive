@@ -1,24 +1,23 @@
-import { createServerFn } from '@tanstack/react-start';
+﻿import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
 import { supabaseAdmin } from '@/integrations/supabase/client.server';
 
-async function assertAdmin(userId: string) {
-  // auth.admin não funciona com sb_secret_ keys — consulta direto via SQL
-  const { data, error } = await supabaseAdmin.rpc('get_user_role', { _user_id: userId });
-  if (error || data !== 'admin') throw new Error('Conta não autorizada a emitir licenças.');
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function assertAdmin(claims: any) {
+  // O JWT já contém app_metadata.role — sem necessidade de round-trip ao DB
+  const role = claims?.app_metadata?.role;
+  if (role !== 'admin') throw new Error('Conta não autorizada a emitir licenças.');
 }
 
-// Gera N códigos de ativação únicos e os insere na tabela
 export const generateActivationCodes = createServerFn({ method: 'POST' })
   .middleware([requireSupabaseAuth])
   .inputValidator(input => z.object({ quantity: z.number().int().min(1).max(500) }).parse(input))
   .handler(async ({ data, context }) => {
-    await assertAdmin(context.userId);
+    assertAdmin(context.claims);
 
     const codes: string[] = [];
     for (let i = 0; i < data.quantity; i++) {
-      // Formato: ADORA-XXXX-XXXX-XXXX (letras maiúsculas + números, sem ambíguos)
       const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
       const seg = () => Array.from(crypto.getRandomValues(new Uint8Array(4)), b => chars[b % chars.length]).join('');
       codes.push(`ADORA-${seg()}-${seg()}-${seg()}`);
@@ -31,11 +30,10 @@ export const generateActivationCodes = createServerFn({ method: 'POST' })
     return { codes };
   });
 
-// Lista códigos gerados (para painel admin)
 export const listActivationCodes = createServerFn({ method: 'POST' })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    await assertAdmin(context.userId);
+    assertAdmin(context.claims);
 
     const { data, error: fetchError } = await supabaseAdmin
       .from('activation_codes')
@@ -47,8 +45,6 @@ export const listActivationCodes = createServerFn({ method: 'POST' })
     return { codes: data ?? [] };
   });
 
-// Consome um código de ativação (chamado pelo APK/web na ativação)
-// Não requer autenticação — qualquer pessoa com o código pode ativar
 export const redeemActivationCode = createServerFn({ method: 'POST' })
   .inputValidator(input => z.object({
     code: z.string().trim().toUpperCase().min(10).max(50),
