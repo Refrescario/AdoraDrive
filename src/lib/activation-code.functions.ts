@@ -3,8 +3,9 @@ import { z } from 'zod';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
 import { supabaseAdmin } from '@/integrations/supabase/client.server';
 
-function assertAdmin(claims: Record<string, unknown>) {
-  const role = claims?.['app_metadata']?.['role'] ?? claims?.['role'];
+async function assertAdmin(userId: string) {
+  const { data: user } = await supabaseAdmin.auth.admin.getUserById(userId);
+  const role = (user?.user?.app_metadata as Record<string, unknown>)?.['role'];
   if (role !== 'admin') throw new Error('Conta não autorizada a emitir licenças.');
 }
 
@@ -13,7 +14,7 @@ export const generateActivationCodes = createServerFn({ method: 'POST' })
   .middleware([requireSupabaseAuth])
   .inputValidator(input => z.object({ quantity: z.number().int().min(1).max(500) }).parse(input))
   .handler(async ({ data, context }) => {
-    assertAdmin(context.claims);
+    await assertAdmin(context.userId);
 
     const codes: string[] = [];
     for (let i = 0; i < data.quantity; i++) {
@@ -34,7 +35,7 @@ export const generateActivationCodes = createServerFn({ method: 'POST' })
 export const listActivationCodes = createServerFn({ method: 'POST' })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    assertAdmin(context.claims);
+    await assertAdmin(context.userId);
 
     const { data, error: fetchError } = await supabaseAdmin
       .from('activation_codes')
