@@ -60,8 +60,9 @@ const PLAYLISTS = [
   ["Deezer · Louvor", "https://www.deezer.com/search/louvor/playlist"],
   ["YouTube Music · Adoração", "https://music.youtube.com/search?q=louvor+e+adora%C3%A7%C3%A3o"],
 ];
-const PRAYER_AUDIO = [b1.url, b2.url, b3.url];
-const VERSE_AUDIO: (string | undefined)[] = [v1.url, v2.url];
+function assetUrl(r2Key: string) { return `/api/assets/${r2Key}`; }
+const PRAYER_AUDIO = [assetUrl(b1.r2_key), assetUrl(b2.r2_key), assetUrl(b3.r2_key)];
+const VERSE_AUDIO: (string | undefined)[] = [assetUrl(v1.r2_key), assetUrl(v2.r2_key)];
 let voice: HTMLAudioElement | null = null;
 function playVoice(url: string | undefined, fallback: string) {
   if (typeof window === "undefined") return;
@@ -363,7 +364,7 @@ function App() {
             <p className="mt-4 text-lg sm:text-xl leading-relaxed">{blessing}</p>
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 justify-center gap-3">
               <Button variant="ghost" onClick={() => playVoice(PRAYER_AUDIO[PRAYERS.indexOf(blessing)], blessing)} className="glass h-auto min-h-12 rounded-lg px-5 py-3 flex items-center gap-2 text-primary"><Volume2 size={18} />Ouvir oração</Button>
-              <Button variant="ghost" onClick={() => { stopVoice(); setBlessing(null); playVoice(welcome.url, "Bem-vindo ao AdoraDrive. Que Deus guie, cuide e abençoe o seu caminho hoje."); }} className="h-auto min-h-12 rounded-lg px-5 py-3 bg-primary text-primary-foreground font-bold">Amém, vamos!</Button>
+              <Button variant="ghost" onClick={() => { stopVoice(); setBlessing(null); playVoice(assetUrl(welcome.r2_key), "Bem-vindo ao AdoraDrive. Que Deus guie, cuide e abençoe o seu caminho hoje."); }} className="h-auto min-h-12 rounded-lg px-5 py-3 bg-primary text-primary-foreground font-bold">Amém, vamos!</Button>
             </div>
           </div>
         </div>
