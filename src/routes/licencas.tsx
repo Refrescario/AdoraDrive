@@ -1,98 +1,177 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useServerFn } from '@tanstack/react-start';
 import { useEffect, useState } from 'react';
-import { LockKeyhole, KeyRound, Copy, Download, LoaderCircle, LogOut, RefreshCw } from 'lucide-react';
+import { LockKeyhole, KeyRound, Copy, Download, LoaderCircle, LogOut, RefreshCw, Plus } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { ProductScreen } from '@/components/ProductScreen';
 import { ScannerAccount } from '@/components/ScannerAccount';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
-import { licenseAdminStatus, issueDeviceLicense } from '@/lib/license-admin.functions';
+import { generateActivationCodes, listActivationCodes } from '@/lib/activation-code.functions';
 
 export const Route = createFileRoute('/licencas')({
   head: () => ({ meta: [
     { title: 'AdoraDrive — Emissão de licenças' },
-    { name: 'description', content: 'Área restrita para emitir licenças AdoraDrive vinculadas à instalação da central.' },
-    { property: 'og:title', content: 'AdoraDrive — Emissão de licenças' },
-    { property: 'og:description', content: 'Emissão protegida de licenças com conferência offline.' },
-    { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary' },
+    { name: 'description', content: 'Área restrita para emitir licenças AdoraDrive.' },
     { name: 'robots', content: 'noindex, nofollow' },
   ] }), component: LicenseIssuer,
 });
-type IssuedRow = { id: string; device_id: string; activation_code: string; created_at: string };
-function download(code: string) {
-  const url = URL.createObjectURL(new Blob([code], { type: 'text/plain' }));
-  const anchor = document.createElement('a'); anchor.href = url; anchor.download = 'licenca-adoradrive.adora'; anchor.click();
+
+type CodeRow = { id: string; code: string; used_at: string | null; used_by_device: string | null; created_at: string };
+
+function downloadCodes(codes: string[]) {
+  const content = codes.join('\n');
+  const url = URL.createObjectURL(new Blob([content], { type: 'text/plain' }));
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = `codigos-adoradrive-${new Date().toISOString().slice(0, 10)}.txt`;
+  anchor.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+
 function LicenseIssuer() {
-  const statusFn = useServerFn(licenseAdminStatus);
-  const issueFn = useServerFn(issueDeviceLicense);
+  const generateFn = useServerFn(generateActivationCodes);
+  const listFn = useServerFn(listActivationCodes);
+
   const [userId, setUserId] = useState<string | null>(null);
   const [admin, setAdmin] = useState(false);
   const [checking, setChecking] = useState(true);
-  const [rows, setRows] = useState<IssuedRow[]>([]);
-  const [deviceId, setDeviceId] = useState('');
-  const [confirmed, setConfirmed] = useState(false);
+  const [rows, setRows] = useState<CodeRow[]>([]);
+  const [quantity, setQuantity] = useState(10);
   const [busy, setBusy] = useState(false);
-  const [code, setCode] = useState('');
+  const [newCodes, setNewCodes] = useState<string[]>([]);
   const [message, setMessage] = useState('');
   const [revision, setRevision] = useState(0);
+
   useEffect(() => {
     let alive = true;
-    void supabase.auth.getSession().then(({ data }) => { if (alive) { setUserId(data.session?.user.id ?? null); if (!data.session) setChecking(false); } });
+    void supabase.auth.getSession().then(({ data }) => {
+      if (alive) { setUserId(data.session?.user.id ?? null); if (!data.session) setChecking(false); }
+    });
     const { data } = supabase.auth.onAuthStateChange((_event, session) => {
       setUserId(session?.user.id ?? null);
-      setAdmin(false); setCode(''); setRows([]);
+      setAdmin(false); setRows([]); setNewCodes([]);
       if (!session) setChecking(false);
     });
     return () => { alive = false; data.subscription.unsubscribe(); };
   }, []);
+
   useEffect(() => {
     if (!userId) return;
     let alive = true;
     setChecking(true);
-    void statusFn().then(result => {
-      if (alive) { setAdmin(result.admin); setRows(result.licenses); }
-    }).catch(() => { if (alive) { setAdmin(false); setMessage('Não foi possível conferir o acesso. Verifique a conexão e tente novamente.'); } })
-      .finally(() => { if (alive) setChecking(false); });
+    void listFn().then(result => {
+      if (alive) { setAdmin(true); setRows(result.codes); }
+    }).catch(() => {
+      if (alive) { setAdmin(false); setMessage('Conta não autorizada ou erro de conexão.'); }
+    }).finally(() => { if (alive) setChecking(false); });
     return () => { alive = false; };
-  }, [userId, revision, statusFn]);
-  const copy = async (value: string) => {
-    try { await navigator.clipboard.writeText(value); setMessage('Licença copiada.'); }
-    catch { setMessage('Não foi possível copiar. Baixe o arquivo da licença.'); }
+  }, [userId, revision, listFn]);
+
+  const handleGenerate = async () => {
+    setBusy(true); setMessage(''); setNewCodes([]);
+    try {
+      const result = await generateFn({ data: { quantity } });
+      setNewCodes(result.codes);
+      setMessage(`${result.codes.length} código(s) gerado(s) com sucesso.`);
+      setRevision(v => v + 1);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Não foi possível gerar os códigos.');
+    } finally {
+      setBusy(false);
+    }
   };
+
+  const copy = async (value: string) => {
+    try { await navigator.clipboard.writeText(value); setMessage('Copiado.'); }
+    catch { setMessage('Não foi possível copiar.'); }
+  };
+
+  const used = rows.filter(r => r.used_at).length;
+  const free = rows.filter(r => !r.used_at).length;
+
   return <ProductScreen><div className="mx-auto max-w-3xl">
     <div className="flex flex-wrap items-start justify-between gap-4">
-      <div><LockKeyhole className="mb-4 size-9 text-primary" /><h1 className="font-display text-2xl sm:text-3xl">Emissão de licenças</h1><p className="mt-3 text-muted-foreground">AdoraDrive · Acesso restrito</p></div>
-      {userId && <Button variant="outline" onClick={async () => { const { error } = await supabase.auth.signOut(); if (error) setMessage('Não foi possível sair.'); }}><LogOut />Sair</Button>}
+      <div>
+        <LockKeyhole className="mb-4 size-9 text-primary" />
+        <h1 className="font-display text-2xl sm:text-3xl">Emissão de licenças</h1>
+        <p className="mt-3 text-muted-foreground">AdoraDrive · Acesso restrito</p>
+      </div>
+      {userId && <Button variant="outline" onClick={async () => { await supabase.auth.signOut(); }}>
+        <LogOut />Sair
+      </Button>}
     </div>
+
     <div className="my-7 border-y py-5">
-      {checking ? <p className="flex items-center gap-2"><LoaderCircle className="animate-spin" />Conferindo acesso…</p> : !userId ? <ScannerAccount purpose="licenses" /> : !admin ? <p className="text-chart-4">Sua conta ainda não está autorizada a emitir licenças.</p> : <p className="flex items-center gap-2 text-primary"><KeyRound />Conta autorizada a emitir</p>}
-      {userId && !admin && !checking && <Button variant="outline" className="mt-4" onClick={() => setRevision(value => value + 1)}><RefreshCw />Conferir acesso</Button>}
+      {checking
+        ? <p className="flex items-center gap-2"><LoaderCircle className="animate-spin" />Conferindo acesso…</p>
+        : !userId ? <ScannerAccount purpose="licenses" />
+        : !admin ? <p className="text-chart-4">Sua conta ainda não está autorizada a emitir licenças.</p>
+        : <p className="flex items-center gap-2 text-primary"><KeyRound />Conta autorizada · {free} disponíveis · {used} usados</p>
+      }
+      {userId && !admin && !checking && <Button variant="outline" className="mt-4" onClick={() => setRevision(v => v + 1)}><RefreshCw />Conferir acesso</Button>}
     </div>
+
     {admin && <>
-      <form className="grid gap-4" onSubmit={async event => {
-        event.preventDefault(); setBusy(true); setMessage(''); setCode('');
-        try {
-          const result = await issueFn({ data: { deviceId, saleConfirmed: true } });
-          setCode(result.code); setMessage(result.reused ? 'Esta instalação já possui licença. A chave original foi recuperada.' : 'Licença emitida e registrada. Envie a chave ou o arquivo ao cliente.');
-          setConfirmed(false); setRevision(value => value + 1);
-        } catch (error) { setMessage(error instanceof Error ? error.message : 'Não foi possível emitir a licença.'); }
-        finally { setBusy(false); }
-      }}>
-        <label htmlFor="device-id" className="font-bold">ID enviado pelo cliente</label>
-        <Textarea id="device-id" value={deviceId} onChange={event => { setDeviceId(event.target.value); setCode(''); setConfirmed(false); }} placeholder="DEV-… · Cole o ID completo" maxLength={100} required spellCheck={false} className="min-h-20 break-all font-mono" />
-        <label className="flex items-start gap-3 text-sm"><Checkbox checked={confirmed} onCheckedChange={value => setConfirmed(value === true)} className="mt-0.5" />Confirmo que autorizei esta emissão e conferi o pagamento fora do aplicativo.</label>
-        <Button type="submit" disabled={busy || !confirmed || !deviceId.trim()} className="min-h-12 justify-self-start">{busy ? <LoaderCircle className="animate-spin" /> : <KeyRound />}Emitir licença</Button>
-      </form>
-      {code && <section className="mt-7 border-y py-5"><h2 className="font-bold">Licença pronta para enviar</h2><Textarea readOnly aria-label="Licença emitida" value={code} className="mt-3 min-h-32 break-all font-mono text-xs" /><div className="mt-4 flex flex-wrap gap-3"><Button variant="outline" onClick={() => void copy(code)}><Copy />Copiar chave</Button><Button onClick={() => download(code)}><Download />Baixar licença</Button></div></section>}
-      <section className="mt-8"><h2 className="font-display text-lg">Últimas emissões</h2>
-        {!rows.length ? <p className="mt-4 text-muted-foreground">Nenhuma licença emitida.</p> : <ul className="mt-4 divide-y">{rows.map(row => <li key={row.id} className="py-4"><p className="break-all font-mono text-xs text-primary">{row.device_id}</p><div className="mt-3 flex flex-wrap items-center gap-3"><span className="text-sm text-muted-foreground">{new Date(row.created_at).toLocaleString('pt-BR')}</span><Button size="icon" variant="outline" aria-label={`Copiar licença de ${row.device_id}`} title="Copiar licença" onClick={() => void copy(row.activation_code)}><Copy /></Button><Button size="icon" variant="outline" aria-label={`Baixar licença de ${row.device_id}`} title="Baixar licença" onClick={() => download(row.activation_code)}><Download /></Button></div></li>)}</ul>}
+      {/* Gerador em lote */}
+      <section className="grid gap-4">
+        <h2 className="font-bold">Gerar novos códigos</h2>
+        <div className="flex items-center gap-3">
+          <label htmlFor="qty" className="text-sm text-muted-foreground">Quantidade:</label>
+          <input
+            id="qty"
+            type="number"
+            min={1} max={500}
+            value={quantity}
+            onChange={e => setQuantity(Math.max(1, Math.min(500, Number(e.target.value))))}
+            className="w-24 rounded-md border border-input bg-background px-3 py-2 text-sm"
+          />
+          <Button onClick={handleGenerate} disabled={busy}>
+            {busy ? <LoaderCircle className="animate-spin" /> : <Plus />}
+            Gerar {quantity} código{quantity !== 1 ? 's' : ''}
+          </Button>
+        </div>
+        <p className="text-xs text-muted-foreground">Cada código é de uso único. Formato: ADORA-XXXX-XXXX-XXXX. Envie por WhatsApp ou e-mail ao cliente.</p>
       </section>
-      <p className="mt-7 text-sm text-muted-foreground">A emissão exige internet; a conferência da chave preparada na central não. Licenças offline não podem ser bloqueadas remotamente. Guarde o ID para atendimento em caso de reinstalação.</p>
+
+      {/* Códigos recém gerados */}
+      {newCodes.length > 0 && <section className="mt-7 border-y py-5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="font-bold">{newCodes.length} código{newCodes.length !== 1 ? 's' : ''} prontos para enviar</h2>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={() => void copy(newCodes.join('\n'))}><Copy />Copiar todos</Button>
+            <Button size="sm" onClick={() => downloadCodes(newCodes)}><Download />Baixar .txt</Button>
+          </div>
+        </div>
+        <ul className="mt-4 grid gap-2">
+          {newCodes.map(code => (
+            <li key={code} className="flex items-center justify-between gap-3 rounded-md border px-3 py-2">
+              <span className="font-mono text-sm text-primary">{code}</span>
+              <Button size="icon" variant="ghost" onClick={() => void copy(code)}><Copy className="size-4" /></Button>
+            </li>
+          ))}
+        </ul>
+      </section>}
+
+      {/* Histórico */}
+      <section className="mt-8">
+        <h2 className="font-display text-lg">Todos os códigos</h2>
+        {!rows.length
+          ? <p className="mt-4 text-muted-foreground">Nenhum código gerado ainda.</p>
+          : <ul className="mt-4 divide-y">
+            {rows.map(row => (
+              <li key={row.id} className="py-3">
+                <div className="flex items-center justify-between gap-3">
+                  <span className={`font-mono text-sm ${row.used_at ? 'text-muted-foreground line-through' : 'text-primary'}`}>{row.code}</span>
+                  {!row.used_at && <Button size="icon" variant="ghost" onClick={() => void copy(row.code)}><Copy className="size-4" /></Button>}
+                </div>
+                {row.used_at && <p className="mt-1 text-xs text-muted-foreground">Usado em {new Date(row.used_at).toLocaleString('pt-BR')}</p>}
+              </li>
+            ))}
+          </ul>
+        }
+      </section>
+
+      <p role="status" aria-live="polite" className="mt-5 text-sm text-chart-4">{message}</p>
     </>}
-    <p role="status" aria-live="polite" className="mt-5 break-words text-sm text-chart-4">{message}</p>
   </div></ProductScreen>;
 }
