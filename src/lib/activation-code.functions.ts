@@ -1,16 +1,19 @@
 import { createServerFn } from '@tanstack/react-start';
 import { z } from 'zod';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
-import { requireIssuerRole } from './license-permissions';
 import { supabaseAdmin } from '@/integrations/supabase/client.server';
+
+function assertAdmin(claims: Record<string, unknown>) {
+  const role = claims?.['app_metadata']?.['role'] ?? claims?.['role'];
+  if (role !== 'admin') throw new Error('Conta não autorizada a emitir licenças.');
+}
 
 // Gera N códigos de ativação únicos e os insere na tabela
 export const generateActivationCodes = createServerFn({ method: 'POST' })
   .middleware([requireSupabaseAuth])
   .inputValidator(input => z.object({ quantity: z.number().int().min(1).max(500) }).parse(input))
   .handler(async ({ data, context }) => {
-    const { data: admin, error } = await context.supabase.rpc('has_role', { _user_id: context.userId, _role: 'admin' });
-    requireIssuerRole({ data: admin, error });
+    assertAdmin(context.claims);
 
     const codes: string[] = [];
     for (let i = 0; i < data.quantity; i++) {
@@ -31,8 +34,7 @@ export const generateActivationCodes = createServerFn({ method: 'POST' })
 export const listActivationCodes = createServerFn({ method: 'POST' })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { data: admin, error } = await context.supabase.rpc('has_role', { _user_id: context.userId, _role: 'admin' });
-    requireIssuerRole({ data: admin, error });
+    assertAdmin(context.claims);
 
     const { data, error: fetchError } = await supabaseAdmin
       .from('activation_codes')
