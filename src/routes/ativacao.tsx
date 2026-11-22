@@ -1,15 +1,34 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
+import { createServerFn, useServerFn } from '@tanstack/react-start';
 import { useRef, useState } from 'react';
 import { KeyRound, ShieldCheck, CircleAlert, ShoppingBag, Upload, LoaderCircle, LockKeyhole } from 'lucide-react';
+import { z } from 'zod';
+import { supabaseAdmin } from '@/integrations/supabase/client.server';
 import { ProductScreen } from '@/components/ProductScreen';
 import { Button } from '@/components/ui/button';
 import { useActivationLicense } from '@/hooks/use-activation-license';
 
+// Server function defined inline so Railway SSR registers it correctly
+const redeemActivationCode = createServerFn({ method: 'POST' })
+  .inputValidator(input => z.object({
+    code: z.string().trim().toUpperCase().min(10).max(50),
+    deviceId: z.string().trim().min(1).max(200),
+  }).parse(input))
+  .handler(async ({ data }) => {
+    const { data: ok, error } = await supabaseAdmin.rpc('consume_activation_code', {
+      p_code: data.code,
+      p_device_id: data.deviceId,
+    });
+    if (error) throw new Error('Nao foi possivel verificar o codigo.');
+    if (!ok) throw new Error('Codigo invalido ou ja utilizado.');
+    return { activated: true };
+  });
+
 export const Route = createFileRoute('/ativacao')({
   head: () => ({ meta: [
-    { title: 'AdoraDrive — Ativação' },
-    { name: 'description', content: 'Ative o AdoraDrive com seu código de licença.' },
-    { property: 'og:title', content: 'AdoraDrive — Ativação' },
+    { title: 'AdoraDrive - Ativacao' },
+    { name: 'description', content: 'Ative o AdoraDrive com seu codigo de licenca.' },
+    { property: 'og:title', content: 'AdoraDrive - Ativacao' },
     { property: 'og:type', content: 'website' },
     { name: 'twitter:card', content: 'summary' },
   ] }), component: Activation,
@@ -20,6 +39,7 @@ function Activation() {
   const [inputCode, setInputCode] = useState('');
   const fileInput = useRef<HTMLInputElement>(null);
   const { activated, activatedAt, ready, message, setMessage, activate } = useActivationLicense();
+  const redeem = useServerFn(redeemActivationCode);
 
   async function handleActivate() {
     const trimmed = inputCode.replace(/\s+/g, '').trim();
@@ -27,10 +47,10 @@ function Activation() {
     setBusy(true);
     setMessage('');
     try {
-      await activate(trimmed);
+      await activate(trimmed, redeem);
       setInputCode('');
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Não foi possível validar o código.');
+      setMessage(error instanceof Error ? error.message : 'Nao foi possivel validar o codigo.');
     } finally {
       setBusy(false);
     }
@@ -41,20 +61,20 @@ function Activation() {
     <h1 className="font-display text-2xl sm:text-3xl">Ativar AdoraDrive</h1>
     <div className="mt-5 flex items-center gap-2 text-primary">
       <ShieldCheck className="size-5 shrink-0" />
-      <span>{activated ? 'Licença ativa' : 'Nenhuma licença verificada'}</span>
+      <span>{activated ? 'Licenca ativa' : 'Nenhuma licenca verificada'}</span>
     </div>
 
     {ready && !activated && <section className="mt-7 border-y py-5">
       <h2 className="mb-3 font-bold">Como ativar</h2>
       <ol className="grid gap-3 text-sm text-muted-foreground">
-        <li className="flex gap-2"><span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">1</span><span>Receba o código no formato <strong className="text-foreground font-mono">ADORA-XXXX-XXXX-XXXX</strong> de quem vendeu sua licença.</span></li>
-        <li className="flex gap-2"><span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">2</span><span>Cole o código no campo abaixo e toque em <strong className="text-foreground">Ativar</strong>.</span></li>
-        <li className="flex gap-2"><span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">3</span><span>Pronto. O aplicativo funciona <strong className="text-foreground">sem internet</strong> depois da ativação.</span></li>
+        <li className="flex gap-2"><span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">1</span><span>Receba o codigo no formato <strong className="text-foreground font-mono">ADORA-XXXX-XXXX-XXXX</strong> de quem vendeu sua licenca.</span></li>
+        <li className="flex gap-2"><span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">2</span><span>Cole o codigo no campo abaixo e toque em <strong className="text-foreground">Ativar</strong>.</span></li>
+        <li className="flex gap-2"><span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">3</span><span>Pronto. O aplicativo funciona <strong className="text-foreground">sem internet</strong> depois da ativacao.</span></li>
       </ol>
     </section>}
 
     {!activated && <div className="mt-7 grid gap-4">
-      <label htmlFor="activation-code" className="font-bold">Código de ativação</label>
+      <label htmlFor="activation-code" className="font-bold">Codigo de ativacao</label>
       <div
         id="activation-code"
         contentEditable
@@ -81,7 +101,7 @@ function Activation() {
           <Upload />Importar arquivo
         </Button>
       </div>
-      <input ref={fileInput} type="file" accept=".adora,.txt,text/plain" className="hidden" aria-label="Arquivo de licença" onChange={async event => {
+      <input ref={fileInput} type="file" accept=".adora,.txt,text/plain" className="hidden" aria-label="Arquivo de licenca" onChange={async event => {
         const file = event.target.files?.[0];
         event.target.value = '';
         if (!file) return;
@@ -89,8 +109,8 @@ function Activation() {
         try {
           const text = (await file.text()).replace(/\s+/g, '').trim();
           setInputCode(text);
-          setMessage('Código carregado. Toque em Ativar para confirmar.');
-        } catch { setMessage('Não foi possível ler o arquivo.'); }
+          setMessage('Codigo carregado. Toque em Ativar para confirmar.');
+        } catch { setMessage('Nao foi possivel ler o arquivo.'); }
       }} />
       <p role="status" aria-live="polite" className="min-h-6 break-words text-sm text-chart-4">{message}</p>
     </div>}
@@ -98,14 +118,14 @@ function Activation() {
     {activated && <>
       <p role="status" aria-live="polite" className="mt-5 break-words text-sm text-primary">{message}</p>
       <Button asChild className="mt-5 min-h-12 w-full"><Link to="/">Abrir AdoraDrive</Link></Button>
-      {activatedAt && <p className="mt-3 text-sm text-muted-foreground">Ativada em {new Date(activatedAt).toLocaleDateString('pt-BR')} · Sem prazo de expiração · Funciona offline.</p>}
+      {activatedAt && <p className="mt-3 text-sm text-muted-foreground">Ativada em {new Date(activatedAt).toLocaleDateString('pt-BR')} - Sem prazo de expiracao - Funciona offline.</p>}
     </>}
 
     <div className="mt-7 flex items-start gap-3 border-y py-5 text-muted-foreground">
       <CircleAlert className="mt-1 size-5 shrink-0 text-chart-4" />
-      <p className="text-sm">Cada código de ativação é de uso único. Após ativar, o aplicativo funciona sem internet neste dispositivo.</p>
+      <p className="text-sm">Cada codigo de ativacao e de uso unico. Apos ativar, o aplicativo funciona sem internet neste dispositivo.</p>
     </div>
     <Button asChild variant="outline" className="mt-6 min-h-11"><Link to="/loja"><ShoppingBag />Ver temas gratuitos</Link></Button>
-    <Button asChild variant="ghost" className="mt-3 min-h-11"><Link to="/licencas"><LockKeyhole />Área de emissão</Link></Button>
+    <Button asChild variant="ghost" className="mt-3 min-h-11"><Link to="/licencas"><LockKeyhole />Area de emissao</Link></Button>
   </div></ProductScreen>;
 }
