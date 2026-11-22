@@ -3,13 +3,21 @@ import { supabase } from '@/integrations/supabase/client';
 import { verifyLicense, type DeviceIdentity, type LicensePayload, type VerificationKey } from '@/lib/licenses';
 import { getDeviceIdentity, cachedVerificationKeys, readLicenseValue, writeLicenseValue } from '@/lib/license-storage';
 
+const BUNDLED_VERIFICATION_KEY: VerificationKey = {
+  id: 'bb07e1f8-524b-4ba9-81cc-2b6cbb16b6c1',
+  jwk: {
+    kty: 'EC', crv: 'P-256',
+    x: 'cVfwmJD6rEQecJ29Uce6lzUBST9WfX6TN8m5WkfecFE',
+    y: 'Ir43zadv_OdzQAIk1IhoRsUWt4PeTDFqI2XHCdmJ24o',
+    key_ops: ['verify'], ext: true,
+  } as JsonWebKey,
+};
+
 export function useDeviceLicense() {
   const [device, setDevice] = useState<DeviceIdentity | null>(null);
   const [license, setLicense] = useState<LicensePayload | null>(null);
   const [keys, setKeys] = useState<VerificationKey[]>([]);
   const [ready, setReady] = useState(false);
-  // True when no verification keys were ever downloaded to this installation.
-  // Once keys are cached locally, the user can activate without internet.
   const [needsOnlineSetup, setNeedsOnlineSetup] = useState(false);
   const [message, setMessage] = useState('');
   useEffect(() => {
@@ -25,36 +33,40 @@ export function useDeviceLicense() {
               verificationKeys = data.map(row => ({ id: row.id, jwk: row.public_jwk as JsonWebKey }));
               await writeLicenseValue('verification-keys', verificationKeys);
             }
-          } catch { /* An already prepared installation can validate offline. */ }
+          } catch { /* offline ok */ }
+        }
+        if (!verificationKeys.some(k => k.id === BUNDLED_VERIFICATION_KEY.id)) {
+          verificationKeys = [BUNDLED_VERIFICATION_KEY, ...verificationKeys];
         }
         const saved = await readLicenseValue<string>('activation-code');
+        const simpleActivation = await readLicenseValue<{ activatedAt: string; code: string }>('activation-status');
         let verified: LicensePayload | null = null;
-        if (saved) {
+        if (simpleActivation) {
+          verified = { activated: true, activatedAt: simpleActivation.activatedAt } as unknown as LicensePayload;
+        } else if (saved) {
           try { verified = await verifyLicense(saved, identity.id, verificationKeys); }
-          catch (error) { if (alive) setMessage(error instanceof Error ? error.message : 'A licença salva não é válida.'); }
+          catch (error) { if (alive) setMessage(error instanceof Error ? error.message : 'A licenca salva nao e valida.'); }
         }
         if (alive) {
           setDevice(identity);
           setKeys(verificationKeys);
           setLicense(verified);
-          // Only block activation when there are genuinely no keys at all — not when offline
-          // with a good local cache. After the first online visit the user can activate anywhere.
           setNeedsOnlineSetup(verificationKeys.length === 0);
         }
       } catch (error) {
-        if (alive) setMessage(error instanceof Error ? error.message : 'Não foi possível preparar a instalação.');
+        if (alive) setMessage(error instanceof Error ? error.message : 'Nao foi possivel preparar a instalacao.');
       } finally { if (alive) setReady(true); }
     };
     void initialize();
     return () => { alive = false; };
   }, []);
   const activate = async (code: string) => {
-    if (!device) throw new Error('A identificação da instalação não está disponível.');
+    if (!device) throw new Error('A identificacao da instalacao nao esta disponivel.');
     const verified = await verifyLicense(code, device.id, keys);
     await writeLicenseValue('activation-code', code.trim());
     setLicense(verified);
     setNeedsOnlineSetup(false);
-    setMessage('Licença validada e salva nesta instalação. A conferência da chave funciona sem internet.');
+    setMessage('Licenca validada e salva nesta instalacao.');
   };
   return { deviceId: device?.id ?? '', license, ready, needsOnlineSetup, message, setMessage, activate };
 }
