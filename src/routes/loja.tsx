@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
-import { Image, Play, Expand, KeyRound, ShoppingBag } from 'lucide-react';
+import { Image, Play, Expand, KeyRound, ShoppingBag, LogIn } from 'lucide-react';
 import { ProductScreen } from '@/components/ProductScreen';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -27,7 +27,10 @@ function ThemeShop() {
     </div>
     <div className="my-7 flex flex-wrap items-center justify-between gap-4 border-y py-5">
       <div><p className="font-bold text-primary">Todos os temas são grátis</p><p className="mt-1 text-sm text-muted-foreground">Incluídos no AdoraDrive após a ativação do aplicativo.</p></div>
-      <Button asChild className="min-h-11"><Link to="/"><Image />Abrir AdoraDrive</Link></Button>
+      <div className="flex gap-2 flex-wrap">
+        <Button asChild variant="outline" className="min-h-11"><Link to="/login"><LogIn />Entrar / Criar conta</Link></Button>
+        <Button asChild className="min-h-11"><Link to="/"><Image />Abrir AdoraDrive</Link></Button>
+      </div>
     </div>
     <Tabs defaultValue="static">
       <TabsList aria-label="Tipo de tema" className="mb-5 grid h-auto min-h-12 w-full grid-cols-2 sm:max-w-md">
