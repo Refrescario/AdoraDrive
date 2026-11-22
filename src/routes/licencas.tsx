@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+﻿import { createFileRoute } from '@tanstack/react-router';
 import { useServerFn } from '@tanstack/react-start';
 import { useEffect, useState } from 'react';
 import { LockKeyhole, KeyRound, Copy, Download, LoaderCircle, LogOut, RefreshCw, Plus } from 'lucide-react';
@@ -59,18 +59,28 @@ function LicenseIssuer() {
     if (!userId) return;
     let alive = true;
     setChecking(true);
-    void listFn().then(result => {
-      if (alive) { setAdmin(true); setRows(result.codes); }
-    }).catch(() => {
-      if (alive) { setAdmin(false); setMessage('Conta não autorizada ou erro de conexão.'); }
-    }).finally(() => { if (alive) setChecking(false); });
+    void supabase.auth.getSession().then(async ({ data: sessionData }) => {
+      const token = sessionData.session?.access_token;
+      if (!token) { if (alive) { setAdmin(false); setChecking(false); } return; }
+      try {
+        const result = await listFn({ headers: { Authorization: `Bearer ${token}` } });
+        if (alive) { setAdmin(true); setRows(result.codes); }
+      } catch {
+        if (alive) { setAdmin(false); setMessage('Conta não autorizada ou erro de conexão.'); }
+      } finally {
+        if (alive) setChecking(false);
+      }
+    });
     return () => { alive = false; };
   }, [userId, revision, listFn]);
 
   const handleGenerate = async () => {
     setBusy(true); setMessage(''); setNewCodes([]);
     try {
-      const result = await generateFn({ data: { quantity } });
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData.session?.access_token;
+      if (!token) { setMessage('Sessão expirada. Faça login novamente.'); setBusy(false); return; }
+      const result = await generateFn({ data: { quantity }, headers: { Authorization: `Bearer ${token}` } });
       setNewCodes(result.codes);
       setMessage(`${result.codes.length} código(s) gerado(s) com sucesso.`);
       setRevision(v => v + 1);
@@ -112,28 +122,21 @@ function LicenseIssuer() {
     </div>
 
     {admin && <>
-      {/* Gerador em lote */}
       <section className="grid gap-4">
         <h2 className="font-bold">Gerar novos códigos</h2>
         <div className="flex items-center gap-3">
           <label htmlFor="qty" className="text-sm text-muted-foreground">Quantidade:</label>
-          <input
-            id="qty"
-            type="number"
-            min={1} max={500}
-            value={quantity}
+          <input id="qty" type="number" min={1} max={500} value={quantity}
             onChange={e => setQuantity(Math.max(1, Math.min(500, Number(e.target.value))))}
-            className="w-24 rounded-md border border-input bg-background px-3 py-2 text-sm"
-          />
+            className="w-24 rounded-md border border-input bg-background px-3 py-2 text-sm" />
           <Button onClick={handleGenerate} disabled={busy}>
             {busy ? <LoaderCircle className="animate-spin" /> : <Plus />}
             Gerar {quantity} código{quantity !== 1 ? 's' : ''}
           </Button>
         </div>
-        <p className="text-xs text-muted-foreground">Cada código é de uso único. Formato: ADORA-XXXX-XXXX-XXXX. Envie por WhatsApp ou e-mail ao cliente.</p>
+        <p className="text-xs text-muted-foreground">Cada código é de uso único. Formato: ADORA-XXXX-XXXX-XXXX.</p>
       </section>
 
-      {/* Códigos recém gerados */}
       {newCodes.length > 0 && <section className="mt-7 border-y py-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="font-bold">{newCodes.length} código{newCodes.length !== 1 ? 's' : ''} prontos para enviar</h2>
@@ -152,7 +155,6 @@ function LicenseIssuer() {
         </ul>
       </section>}
 
-      {/* Histórico */}
       <section className="mt-8">
         <h2 className="font-display text-lg">Todos os códigos</h2>
         {!rows.length
