@@ -1,12 +1,50 @@
-﻿import { createFileRoute } from '@tanstack/react-router';
-import { useServerFn } from '@tanstack/react-start';
+import { createFileRoute } from '@tanstack/react-router';
+import { createServerFn, useServerFn } from '@tanstack/react-start';
 import { useEffect, useState } from 'react';
 import { LockKeyhole, KeyRound, Copy, Download, LoaderCircle, LogOut, RefreshCw, Plus } from 'lucide-react';
+import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
+import { supabaseAdmin } from '@/integrations/supabase/client.server';
+import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
 import { ProductScreen } from '@/components/ProductScreen';
 import { ScannerAccount } from '@/components/ScannerAccount';
 import { Button } from '@/components/ui/button';
-import { generateActivationCodes, listActivationCodes } from '@/lib/activation-code.functions';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function assertAdmin(claims: any) {
+  const role = claims?.app_metadata?.role;
+  if (role !== 'admin') throw new Error('Conta não autorizada a emitir licenças.');
+}
+
+const generateActivationCodes = createServerFn({ method: 'POST' })
+  .middleware([requireSupabaseAuth])
+  .inputValidator(input => z.object({ quantity: z.number().int().min(1).max(500) }).parse(input))
+  .handler(async ({ data, context }) => {
+    assertAdmin(context.claims);
+    const codes: string[] = [];
+    for (let i = 0; i < data.quantity; i++) {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      const seg = () => Array.from(crypto.getRandomValues(new Uint8Array(4)), b => chars[b % chars.length]).join('');
+      codes.push(`ADORA-${seg()}-${seg()}-${seg()}`);
+    }
+    const rows = codes.map(code => ({ code, created_by: context.userId }));
+    const { error: insertError } = await supabaseAdmin.from('activation_codes').insert(rows);
+    if (insertError) throw new Error('Não foi possível salvar os códigos.');
+    return { codes };
+  });
+
+const listActivationCodes = createServerFn({ method: 'POST' })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    assertAdmin(context.claims);
+    const { data, error: fetchError } = await supabaseAdmin
+      .from('activation_codes')
+      .select('id, code, used_at, used_by_device, created_at')
+      .order('created_at', { ascending: false })
+      .limit(200);
+    if (fetchError) throw new Error('Não foi possível listar os códigos.');
+    return { codes: data ?? [] };
+  });
 
 export const Route = createFileRoute('/licencas')({
   head: () => ({ meta: [
