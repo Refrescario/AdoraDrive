@@ -60,7 +60,7 @@ const PLAYLISTS = [
   ["Deezer · Louvor", "https://www.deezer.com/search/louvor/playlist"],
   ["YouTube Music · Adoração", "https://music.youtube.com/search?q=louvor+e+adora%C3%A7%C3%A3o"],
 ];
-function assetUrl(r2Key: string) { return `/api/assets/${r2Key}`; }
+function assetUrl(r2Key: string) { return `https://gptengineer.app/__l5e/assets-v1/${r2Key}`; }
 const PRAYER_AUDIO = [assetUrl(b1.r2_key), assetUrl(b2.r2_key), assetUrl(b3.r2_key)];
 const VERSE_AUDIO: (string | undefined)[] = [assetUrl(v1.r2_key), assetUrl(v2.r2_key)];
 let voice: HTMLAudioElement | null = null;
