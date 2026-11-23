@@ -1,0 +1,454 @@
+diff --git a/src/assets/anjos-guardioes.mp4.asset.json b/src/assets/anjos-guardioes.mp4.asset.json
+index 3ac775e..d83a3a1 100644
+--- a/src/assets/anjos-guardioes.mp4.asset.json
++++ b/src/assets/anjos-guardioes.mp4.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "ceaf9203-17c7-4eac-b1ca-113bc8c86c19",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/ceaf9203-17c7-4eac-b1ca-113bc8c86c19/anjos-guardioes.mp4",
++  "url": "/assets/media/anjos-guardioes.mp4",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/ceaf9203-17c7-4eac-b1ca-113bc8c86c19/anjos-guardioes.mp4",
+   "original_filename": "anjos-guardioes.mp4",
+   "size": 3416061,
+diff --git a/src/assets/anjos-loop-suave.mp4.asset.json b/src/assets/anjos-loop-suave.mp4.asset.json
+index 6fe8a35..d522d79 100644
+--- a/src/assets/anjos-loop-suave.mp4.asset.json
++++ b/src/assets/anjos-loop-suave.mp4.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "60183e26-755c-47a9-836c-7f6406659a6a",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/60183e26-755c-47a9-836c-7f6406659a6a/anjos-loop-suave.mp4",
++  "url": "/assets/media/anjos-loop-suave.mp4",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/60183e26-755c-47a9-836c-7f6406659a6a/anjos-loop-suave.mp4",
+   "original_filename": "anjos-loop-suave.mp4",
+   "size": 7704593,
+diff --git a/src/assets/anjos-nuvens-continuo.mp4.asset.json b/src/assets/anjos-nuvens-continuo.mp4.asset.json
+index b0c4206..b62770d 100644
+--- a/src/assets/anjos-nuvens-continuo.mp4.asset.json
++++ b/src/assets/anjos-nuvens-continuo.mp4.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "a2e3b97f-1ad9-4609-a416-a192e2b470d8",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/a2e3b97f-1ad9-4609-a416-a192e2b470d8/anjos-nuvens-continuo.mp4",
++  "url": "/assets/media/anjos-nuvens-continuo.mp4",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/a2e3b97f-1ad9-4609-a416-a192e2b470d8/anjos-nuvens-continuo.mp4",
+   "original_filename": "anjos-nuvens-continuo.mp4",
+   "size": 1120899,
+diff --git a/src/assets/anjos-nuvens.jpg.asset.json b/src/assets/anjos-nuvens.jpg.asset.json
+index cfa4688..3858f59 100644
+--- a/src/assets/anjos-nuvens.jpg.asset.json
++++ b/src/assets/anjos-nuvens.jpg.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "b822eb60-de92-4087-8b8f-1a9bf82f52c8",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/b822eb60-de92-4087-8b8f-1a9bf82f52c8/anjos-nuvens.jpg",
++  "url": "/assets/media/anjos-nuvens.jpg",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/b822eb60-de92-4087-8b8f-1a9bf82f52c8/anjos-nuvens.jpg",
+   "original_filename": "anjos-nuvens.jpg",
+   "size": 232699,
+diff --git a/src/assets/anjos-nuvens.mp4.asset.json b/src/assets/anjos-nuvens.mp4.asset.json
+index 7c7e300..e617c97 100644
+--- a/src/assets/anjos-nuvens.mp4.asset.json
++++ b/src/assets/anjos-nuvens.mp4.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "7c68f57e-d79c-42cf-a600-cb15d6274bd2",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/7c68f57e-d79c-42cf-a600-cb15d6274bd2/anjos-nuvens.mp4",
++  "url": "/assets/media/anjos-nuvens.mp4",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/7c68f57e-d79c-42cf-a600-cb15d6274bd2/anjos-nuvens.mp4",
+   "original_filename": "anjos-nuvens.mp4",
+   "size": 1256571,
+diff --git a/src/assets/anjos-original.jpg.asset.json b/src/assets/anjos-original.jpg.asset.json
+index 3835132..9b245a4 100644
+--- a/src/assets/anjos-original.jpg.asset.json
++++ b/src/assets/anjos-original.jpg.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "6b92d1a2-f2ab-452a-bbb3-4f63833935c9",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/6b92d1a2-f2ab-452a-bbb3-4f63833935c9/anjos-original.jpg",
++  "url": "/assets/media/anjos-original.jpg",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/6b92d1a2-f2ab-452a-bbb3-4f63833935c9/anjos-original.jpg",
+   "original_filename": "anjos-original.jpg",
+   "size": 182364,
+diff --git a/src/assets/bencao-1.mp3.asset.json b/src/assets/bencao-1.mp3.asset.json
+index 0c32bd1..d83f644 100644
+--- a/src/assets/bencao-1.mp3.asset.json
++++ b/src/assets/bencao-1.mp3.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "da583cba-bd1c-4e06-8430-d8e9db3bffa9",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/da583cba-bd1c-4e06-8430-d8e9db3bffa9/bencao-1.mp3",
++  "url": "/assets/media/bencao-1.mp3",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/da583cba-bd1c-4e06-8430-d8e9db3bffa9/bencao-1.mp3",
+   "original_filename": "bencao-1.mp3",
+   "size": 204032,
+diff --git a/src/assets/bencao-2.mp3.asset.json b/src/assets/bencao-2.mp3.asset.json
+index 51a3efc..5251d3d 100644
+--- a/src/assets/bencao-2.mp3.asset.json
++++ b/src/assets/bencao-2.mp3.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "8570a397-428a-43e4-9921-de819face891",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/8570a397-428a-43e4-9921-de819face891/bencao-2.mp3",
++  "url": "/assets/media/bencao-2.mp3",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/8570a397-428a-43e4-9921-de819face891/bencao-2.mp3",
+   "original_filename": "bencao-2.mp3",
+   "size": 165997,
+diff --git a/src/assets/bencao-3.mp3.asset.json b/src/assets/bencao-3.mp3.asset.json
+index 14954c9..639a0cf 100644
+--- a/src/assets/bencao-3.mp3.asset.json
++++ b/src/assets/bencao-3.mp3.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "03dcf0da-ca29-486a-990d-c8caeaa04991",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/03dcf0da-ca29-486a-990d-c8caeaa04991/bencao-3.mp3",
++  "url": "/assets/media/bencao-3.mp3",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/03dcf0da-ca29-486a-990d-c8caeaa04991/bencao-3.mp3",
+   "original_filename": "bencao-3.mp3",
+   "size": 111663,
+diff --git a/src/assets/boas-vindas.mp3.asset.json b/src/assets/boas-vindas.mp3.asset.json
+index 7fb16d3..4c6a5d0 100644
+--- a/src/assets/boas-vindas.mp3.asset.json
++++ b/src/assets/boas-vindas.mp3.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "bfd02f45-a6e1-40e0-b0a8-c92741e39dc4",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/bfd02f45-a6e1-40e0-b0a8-c92741e39dc4/boas-vindas.mp3",
++  "url": "/assets/media/boas-vindas.mp3",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/bfd02f45-a6e1-40e0-b0a8-c92741e39dc4/boas-vindas.mp3",
+   "original_filename": "boas-vindas.mp3",
+   "size": 95362,
+diff --git a/src/assets/ceu-anjos-classicos.png.asset.json b/src/assets/ceu-anjos-classicos.png.asset.json
+index c2e312f..02bd351 100644
+--- a/src/assets/ceu-anjos-classicos.png.asset.json
++++ b/src/assets/ceu-anjos-classicos.png.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "96d58dd7-7634-4866-b6b6-ff5f24cb8fe3",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/96d58dd7-7634-4866-b6b6-ff5f24cb8fe3/ceu-anjos-classicos.png",
++  "url": "/assets/media/ceu-anjos-classicos.png",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/96d58dd7-7634-4866-b6b6-ff5f24cb8fe3/ceu-anjos-classicos.png",
+   "original_filename": "ceu-anjos-classicos.png",
+   "size": 1983305,
+diff --git a/src/assets/ceu-anjos-nuvens.png.asset.json b/src/assets/ceu-anjos-nuvens.png.asset.json
+index 612924f..fec6904 100644
+--- a/src/assets/ceu-anjos-nuvens.png.asset.json
++++ b/src/assets/ceu-anjos-nuvens.png.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "5e208234-c2ec-49f8-a236-29dcb2185e25",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/5e208234-c2ec-49f8-a236-29dcb2185e25/ceu-anjos-nuvens.png",
++  "url": "/assets/media/ceu-anjos-nuvens.png",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/5e208234-c2ec-49f8-a236-29dcb2185e25/ceu-anjos-nuvens.png",
+   "original_filename": "ceu-anjos-nuvens.png",
+   "size": 1881685,
+diff --git a/src/assets/ceu-anjos.png.asset.json b/src/assets/ceu-anjos.png.asset.json
+index 30bdc7e..1b1dfee 100644
+--- a/src/assets/ceu-anjos.png.asset.json
++++ b/src/assets/ceu-anjos.png.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "68ba4cda-418c-4cd9-8fdf-0ee98bd6cfd1",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/68ba4cda-418c-4cd9-8fdf-0ee98bd6cfd1/ceu-anjos.png",
++  "url": "/assets/media/ceu-anjos.png",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/68ba4cda-418c-4cd9-8fdf-0ee98bd6cfd1/ceu-anjos.png",
+   "original_filename": "ceu-anjos.png",
+   "size": 2013811,
+diff --git a/src/assets/ceu-classico-anjo.png.asset.json b/src/assets/ceu-classico-anjo.png.asset.json
+index 0826bef..15de060 100644
+--- a/src/assets/ceu-classico-anjo.png.asset.json
++++ b/src/assets/ceu-classico-anjo.png.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "0d76e173-5ed0-4435-9492-772495af3814",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/0d76e173-5ed0-4435-9492-772495af3814/ceu-classico-anjo.png",
++  "url": "/assets/media/ceu-classico-anjo.png",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/0d76e173-5ed0-4435-9492-772495af3814/ceu-classico-anjo.png",
+   "original_filename": "ceu-classico-anjo.png",
+   "size": 2335769,
+diff --git a/src/assets/ceu-classico-cruz.png.asset.json b/src/assets/ceu-classico-cruz.png.asset.json
+index 4ad3767..689e423 100644
+--- a/src/assets/ceu-classico-cruz.png.asset.json
++++ b/src/assets/ceu-classico-cruz.png.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "cf472263-4630-4779-b414-24edfc679eae",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/cf472263-4630-4779-b414-24edfc679eae/ceu-classico-cruz.png",
++  "url": "/assets/media/ceu-classico-cruz.png",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/cf472263-4630-4779-b414-24edfc679eae/ceu-classico-cruz.png",
+   "original_filename": "ceu-classico-cruz.png",
+   "size": 1877414,
+diff --git a/src/assets/ceu-classico-jesus.png.asset.json b/src/assets/ceu-classico-jesus.png.asset.json
+index f94649e..0116b0a 100644
+--- a/src/assets/ceu-classico-jesus.png.asset.json
++++ b/src/assets/ceu-classico-jesus.png.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "f8f72e9a-03f1-41a5-aac3-f658fcc24677",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/f8f72e9a-03f1-41a5-aac3-f658fcc24677/ceu-classico-jesus.png",
++  "url": "/assets/media/ceu-classico-jesus.png",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/f8f72e9a-03f1-41a5-aac3-f658fcc24677/ceu-classico-jesus.png",
+   "original_filename": "ceu-classico-jesus.png",
+   "size": 2028753,
+diff --git a/src/assets/ceu-classico-pomba.png.asset.json b/src/assets/ceu-classico-pomba.png.asset.json
+index 0b7e190..126e910 100644
+--- a/src/assets/ceu-classico-pomba.png.asset.json
++++ b/src/assets/ceu-classico-pomba.png.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "0837d5d8-34ff-41f7-b6c7-3281784d98b9",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/0837d5d8-34ff-41f7-b6c7-3281784d98b9/ceu-classico-pomba.png",
++  "url": "/assets/media/ceu-classico-pomba.png",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/0837d5d8-34ff-41f7-b6c7-3281784d98b9/ceu-classico-pomba.png",
+   "original_filename": "ceu-classico-pomba.png",
+   "size": 1940019,
+diff --git a/src/assets/ceu-jesus.png.asset.json b/src/assets/ceu-jesus.png.asset.json
+index 2df41d2..3a81103 100644
+--- a/src/assets/ceu-jesus.png.asset.json
++++ b/src/assets/ceu-jesus.png.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "acc82a44-f2ef-4760-ba74-9c50e5337c3f",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/acc82a44-f2ef-4760-ba74-9c50e5337c3f/ceu-jesus.png",
++  "url": "/assets/media/ceu-jesus.png",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/acc82a44-f2ef-4760-ba74-9c50e5337c3f/ceu-jesus.png",
+   "original_filename": "ceu-jesus.png",
+   "size": 1979767,
+diff --git a/src/assets/ceu-maos.png.asset.json b/src/assets/ceu-maos.png.asset.json
+index a9931f3..015ce00 100644
+--- a/src/assets/ceu-maos.png.asset.json
++++ b/src/assets/ceu-maos.png.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "83f8d03c-54e4-4aec-8f6f-e96cec26c45a",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/83f8d03c-54e4-4aec-8f6f-e96cec26c45a/ceu-maos.png",
++  "url": "/assets/media/ceu-maos.png",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/83f8d03c-54e4-4aec-8f6f-e96cec26c45a/ceu-maos.png",
+   "original_filename": "ceu-maos.png",
+   "size": 1821048,
+diff --git a/src/assets/ceu-nuvens.png.asset.json b/src/assets/ceu-nuvens.png.asset.json
+index 91b98e9..a50ab69 100644
+--- a/src/assets/ceu-nuvens.png.asset.json
++++ b/src/assets/ceu-nuvens.png.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "a7eb48e8-ae27-45c5-95c3-96e18417ebd9",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/a7eb48e8-ae27-45c5-95c3-96e18417ebd9/ceu-nuvens.png",
++  "url": "/assets/media/ceu-nuvens.png",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/a7eb48e8-ae27-45c5-95c3-96e18417ebd9/ceu-nuvens.png",
+   "original_filename": "ceu-nuvens.png",
+   "size": 1986814,
+diff --git a/src/assets/design-anjos.jpg.asset.json b/src/assets/design-anjos.jpg.asset.json
+index 8c9469b..34c585b 100644
+--- a/src/assets/design-anjos.jpg.asset.json
++++ b/src/assets/design-anjos.jpg.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "4c3d82e9-2ec5-4fbe-a916-c2a2d3ad086c",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/4c3d82e9-2ec5-4fbe-a916-c2a2d3ad086c/design-anjos.jpg",
++  "url": "/assets/media/design-anjos.jpg",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/4c3d82e9-2ec5-4fbe-a916-c2a2d3ad086c/design-anjos.jpg",
+   "original_filename": "design-anjos.jpg",
+   "size": 594423,
+diff --git a/src/assets/design-jesus.jpg.asset.json b/src/assets/design-jesus.jpg.asset.json
+index 54550bc..14fc571 100644
+--- a/src/assets/design-jesus.jpg.asset.json
++++ b/src/assets/design-jesus.jpg.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "e6f7993f-f83e-482d-91eb-8f927ec41137",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/e6f7993f-f83e-482d-91eb-8f927ec41137/design-jesus.jpg",
++  "url": "/assets/media/design-jesus.jpg",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/e6f7993f-f83e-482d-91eb-8f927ec41137/design-jesus.jpg",
+   "original_filename": "design-jesus.jpg",
+   "size": 395018,
+diff --git a/src/assets/design-maos.jpg.asset.json b/src/assets/design-maos.jpg.asset.json
+index 3ac0757..e1afbe2 100644
+--- a/src/assets/design-maos.jpg.asset.json
++++ b/src/assets/design-maos.jpg.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "08e27d5b-f137-4c3b-b897-217e76c69f85",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/08e27d5b-f137-4c3b-b897-217e76c69f85/design-maos.jpg",
++  "url": "/assets/media/design-maos.jpg",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/08e27d5b-f137-4c3b-b897-217e76c69f85/design-maos.jpg",
+   "original_filename": "design-maos.jpg",
+   "size": 308648,
+diff --git a/src/assets/design-pomba.jpg.asset.json b/src/assets/design-pomba.jpg.asset.json
+index f75f272..3418a48 100644
+--- a/src/assets/design-pomba.jpg.asset.json
++++ b/src/assets/design-pomba.jpg.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "8aa4f9d2-743c-4a10-9076-02bb41a7a6f8",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/8aa4f9d2-743c-4a10-9076-02bb41a7a6f8/design-pomba.jpg",
++  "url": "/assets/media/design-pomba.jpg",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/8aa4f9d2-743c-4a10-9076-02bb41a7a6f8/design-pomba.jpg",
+   "original_filename": "design-pomba.jpg",
+   "size": 467452,
+diff --git a/src/assets/fundo-anjo.jpg.asset.json b/src/assets/fundo-anjo.jpg.asset.json
+index d5968d8..3daee0d 100644
+--- a/src/assets/fundo-anjo.jpg.asset.json
++++ b/src/assets/fundo-anjo.jpg.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "5b0d8607-7856-4d61-815a-fd67430f9313",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/5b0d8607-7856-4d61-815a-fd67430f9313/fundo-anjo.jpg",
++  "url": "/assets/media/fundo-anjo.jpg",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/5b0d8607-7856-4d61-815a-fd67430f9313/fundo-anjo.jpg",
+   "original_filename": "fundo-anjo.jpg",
+   "size": 496012,
+diff --git a/src/assets/fundo-cruz.jpg.asset.json b/src/assets/fundo-cruz.jpg.asset.json
+index e4db322..d9e57e1 100644
+--- a/src/assets/fundo-cruz.jpg.asset.json
++++ b/src/assets/fundo-cruz.jpg.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "729410b1-fa56-4dca-851a-4f7e5b953681",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/729410b1-fa56-4dca-851a-4f7e5b953681/fundo-cruz.jpg",
++  "url": "/assets/media/fundo-cruz.jpg",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/729410b1-fa56-4dca-851a-4f7e5b953681/fundo-cruz.jpg",
+   "original_filename": "fundo-cruz.jpg",
+   "size": 345351,
+diff --git a/src/assets/fundo-jesus.jpg.asset.json b/src/assets/fundo-jesus.jpg.asset.json
+index 9cde51c..528112d 100644
+--- a/src/assets/fundo-jesus.jpg.asset.json
++++ b/src/assets/fundo-jesus.jpg.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "ec8fc35f-2c23-4214-86fa-3b5d7cc767f5",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/ec8fc35f-2c23-4214-86fa-3b5d7cc767f5/fundo-jesus.jpg",
++  "url": "/assets/media/fundo-jesus.jpg",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/ec8fc35f-2c23-4214-86fa-3b5d7cc767f5/fundo-jesus.jpg",
+   "original_filename": "fundo-jesus.jpg",
+   "size": 367814,
+diff --git a/src/assets/fundo-pomba.jpg.asset.json b/src/assets/fundo-pomba.jpg.asset.json
+index d43e0aa..4a0a278 100644
+--- a/src/assets/fundo-pomba.jpg.asset.json
++++ b/src/assets/fundo-pomba.jpg.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "8b23d48a-3d97-491e-9934-703c4367877a",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/8b23d48a-3d97-491e-9934-703c4367877a/fundo-pomba.jpg",
++  "url": "/assets/media/fundo-pomba.jpg",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/8b23d48a-3d97-491e-9934-703c4367877a/fundo-pomba.jpg",
+   "original_filename": "fundo-pomba.jpg",
+   "size": 355390,
+diff --git a/src/assets/maos-loop-suave.mp4.asset.json b/src/assets/maos-loop-suave.mp4.asset.json
+index 6e0b11a..63f4bc5 100644
+--- a/src/assets/maos-loop-suave.mp4.asset.json
++++ b/src/assets/maos-loop-suave.mp4.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "1b5c213c-24e3-4c79-8f4f-a99d8e6fafbb",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/1b5c213c-24e3-4c79-8f4f-a99d8e6fafbb/maos-loop-suave.mp4",
++  "url": "/assets/media/maos-loop-suave.mp4",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/1b5c213c-24e3-4c79-8f4f-a99d8e6fafbb/maos-loop-suave.mp4",
+   "original_filename": "maos-loop-suave.mp4",
+   "size": 3395361,
+diff --git a/src/assets/scan-anjos.jpg.asset.json b/src/assets/scan-anjos.jpg.asset.json
+index 7ac6485..0dac346 100644
+--- a/src/assets/scan-anjos.jpg.asset.json
++++ b/src/assets/scan-anjos.jpg.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "fab479b8-8efc-4772-8417-e299458a8370",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/fab479b8-8efc-4772-8417-e299458a8370/scan-anjos.jpg",
++  "url": "/assets/media/scan-anjos.jpg",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/fab479b8-8efc-4772-8417-e299458a8370/scan-anjos.jpg",
+   "original_filename": "scan-anjos.jpg",
+   "size": 598781,
+diff --git a/src/assets/scanner-monte.png.asset.json b/src/assets/scanner-monte.png.asset.json
+index ede19e6..4df46c6 100644
+--- a/src/assets/scanner-monte.png.asset.json
++++ b/src/assets/scanner-monte.png.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "d94ef35d-d605-485a-be7f-675f465843da",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/d94ef35d-d605-485a-be7f-675f465843da/scanner-monte.png",
++  "url": "/assets/media/scanner-monte.png",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/d94ef35d-d605-485a-be7f-675f465843da/scanner-monte.png",
+   "original_filename": "scanner-monte.png",
+   "size": 2031357,
+diff --git a/src/assets/versiculo-1.mp3.asset.json b/src/assets/versiculo-1.mp3.asset.json
+index 5aa839d..52dfe0b 100644
+--- a/src/assets/versiculo-1.mp3.asset.json
++++ b/src/assets/versiculo-1.mp3.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "f57bfdc1-c71c-43db-9af0-4a9502cc8472",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/f57bfdc1-c71c-43db-9af0-4a9502cc8472/versiculo-1.mp3",
++  "url": "/assets/media/versiculo-1.mp3",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/f57bfdc1-c71c-43db-9af0-4a9502cc8472/versiculo-1.mp3",
+   "original_filename": "versiculo-1.mp3",
+   "size": 106647,
+diff --git a/src/assets/versiculo-2.mp3.asset.json b/src/assets/versiculo-2.mp3.asset.json
+index cb869b6..86f1e28 100644
+--- a/src/assets/versiculo-2.mp3.asset.json
++++ b/src/assets/versiculo-2.mp3.asset.json
+@@ -2,7 +2,7 @@
+   "version": 1,
+   "asset_id": "e4fee37b-21a8-427c-a3c4-d16d31fa5a04",
+   "project_id": "69638774-c14d-4c07-bc9f-5d5ad10cc66c",
+-  "url": "/api/assets/e4fee37b-21a8-427c-a3c4-d16d31fa5a04/versiculo-2.mp3",
++  "url": "/assets/media/versiculo-2.mp3",
+   "r2_key": "a/v1/69638774-c14d-4c07-bc9f-5d5ad10cc66c/e4fee37b-21a8-427c-a3c4-d16d31fa5a04/versiculo-2.mp3",
+   "original_filename": "versiculo-2.mp3",
+   "size": 112499,
+diff --git a/src/routes/index.tsx b/src/routes/index.tsx
+index f921ac9..5ef519f 100644
+--- a/src/routes/index.tsx
++++ b/src/routes/index.tsx
+@@ -60,9 +60,8 @@ const PLAYLISTS = [
+   ["Deezer · Louvor", "https://www.deezer.com/search/louvor/playlist"],
+   ["YouTube Music · Adoração", "https://music.youtube.com/search?q=louvor+e+adora%C3%A7%C3%A3o"],
+ ];
+-function assetUrl(r2Key: string) { return `https://gptengineer.app/__l5e/assets-v1/${r2Key}`; }
+-const PRAYER_AUDIO = [assetUrl(b1.r2_key), assetUrl(b2.r2_key), assetUrl(b3.r2_key)];
+-const VERSE_AUDIO: (string | undefined)[] = [assetUrl(v1.r2_key), assetUrl(v2.r2_key)];
++const PRAYER_AUDIO = [b1.url, b2.url, b3.url];
++const VERSE_AUDIO: (string | undefined)[] = [v1.url, v2.url];
+ let voice: HTMLAudioElement | null = null;
+ function playVoice(url: string | undefined, fallback: string) {
+   if (typeof window === "undefined") return;
+@@ -364,7 +363,7 @@ function App() {
+             <p className="mt-4 text-lg sm:text-xl leading-relaxed">{blessing}</p>
+             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 justify-center gap-3">
+               <Button variant="ghost" onClick={() => playVoice(PRAYER_AUDIO[PRAYERS.indexOf(blessing)], blessing)} className="glass h-auto min-h-12 rounded-lg px-5 py-3 flex items-center gap-2 text-primary"><Volume2 size={18} />Ouvir oração</Button>
+-              <Button variant="ghost" onClick={() => { stopVoice(); setBlessing(null); playVoice(assetUrl(welcome.r2_key), "Bem-vindo ao AdoraDrive. Que Deus guie, cuide e abençoe o seu caminho hoje."); }} className="h-auto min-h-12 rounded-lg px-5 py-3 bg-primary text-primary-foreground font-bold">Amém, vamos!</Button>
++              <Button variant="ghost" onClick={() => { stopVoice(); setBlessing(null); playVoice(welcome.url, "Bem-vindo ao AdoraDrive. Que Deus guie, cuide e abençoe o seu caminho hoje."); }} className="h-auto min-h-12 rounded-lg px-5 py-3 bg-primary text-primary-foreground font-bold">Amém, vamos!</Button>
+             </div>
+           </div>
+         </div>

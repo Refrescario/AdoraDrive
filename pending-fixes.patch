@@ -1,0 +1,60 @@
+diff --git a/src/components/HaloDashboard.tsx b/src/components/HaloDashboard.tsx
+index 6c90de8..ba631b5 100644
+--- a/src/components/HaloDashboard.tsx
++++ b/src/components/HaloDashboard.tsx
+@@ -69,6 +69,20 @@ export function HaloDashboard({ design, speed, rpm, animated, contained = false
+             aria-label={`${d.name} animados`}
+             className="absolute inset-0 h-full w-full object-cover halo-bg"
+             onError={() => setFailedVideos((failed) => [...failed, design])}
++            ref={(el) => {
++              if (el) {
++                el.muted = true;
++                const p = el.play();
++                if (p !== undefined) {
++                  p.catch(() => {
++                    // autoplay blocked — try again on first user interaction
++                    const resume = () => { el.play().catch(() => {}); document.removeEventListener("click", resume); document.removeEventListener("touchstart", resume); };
++                    document.addEventListener("click", resume, { once: true });
++                    document.addEventListener("touchstart", resume, { once: true });
++                  });
++                }
++              }
++            }}
+           />
+         )}
+         <div className="absolute aspect-square -translate-x-1/2 -translate-y-1/2" style={{ left: `${d.x * 100}%`, top: `${d.y * 100}%`, height: `${d.d * 100}%` }}>
+diff --git a/src/lib/theme-skies.ts b/src/lib/theme-skies.ts
+index dea379f..cc1939e 100644
+--- a/src/lib/theme-skies.ts
++++ b/src/lib/theme-skies.ts
+@@ -3,11 +3,12 @@ import clouds from "@/assets/ceu-anjos-nuvens.png.asset.json";
+ import light from "@/assets/ceu-anjos-classicos.png.asset.json";
+ import hands from "@/assets/ceu-maos.png.asset.json";
+ import jesus from "@/assets/ceu-jesus.png.asset.json";
+-import dove from "@/assets/ceu-nuvens.png.asset.json";
+-import classicJesus from "@/assets/ceu-classico-jesus.png.asset.json";
+-import classicAngel from "@/assets/ceu-classico-anjo.png.asset.json";
+-import classicCross from "@/assets/ceu-classico-cruz.png.asset.json";
+-import classicDove from "@/assets/ceu-classico-pomba.png.asset.json";
++// ceu-nuvens, ceu-classico-* não existem localmente — usar substitutos
++import dove from "@/assets/ceu-anjos-nuvens.png.asset.json";
++import classicJesus from "@/assets/ceu-jesus.png.asset.json";
++import classicAngel from "@/assets/ceu-anjos.png.asset.json";
++import classicCross from "@/assets/ceu-anjos-classicos.png.asset.json";
++import classicDove from "@/assets/ceu-anjos-nuvens.png.asset.json";
+ 
+ export const DESIGN_SKIES = {
+   anjos: angels.url,
+diff --git a/src/lib/themes.ts b/src/lib/themes.ts
+index de875fb..1c8eaf4 100644
+--- a/src/lib/themes.ts
++++ b/src/lib/themes.ts
+@@ -37,7 +37,7 @@ export const THEME_CATALOG: ThemeOption[] = [
+   ...DESIGNS.map((d) => ({ id: `premium-${d.id}`, name: d.name, img: d.img, sky: DESIGN_SKIES[d.id], design: d.id, background: "jesus", premium: false, animated: true, palette: designPalettes[d.id] })),
+   ...backgrounds.map((t) => ({ ...t, id: `premium-classico-${t.id}`, design: "classico" as const, background: t.id, premium: false, animated: true })),
+ ];
+-export const DEFAULT_FREE_THEME = "free-anjos-nuvens";
++export const DEFAULT_FREE_THEME = "premium-anjos-nuvens";
+ export function resolveTheme(id: string): ThemeOption {
+   const theme = THEME_CATALOG.find((t) => t.id === id) ?? THEME_CATALOG.find((t) => t.id === DEFAULT_FREE_THEME);
+   if (!theme) throw new Error("A coleção precisa de um tema gratuito.");
